@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAPPENE™ - Il Cappello Che Non Ti Aspetti! 🎩🍆</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --pink: #FF6B9D; --purple: #C44DFF; --blue: #4DA8FF; --yellow: #FFD93D;
+            --green: #6BCB77; --orange: #FF8C42; --red: #FF4757; --dark: #2D2D2D; --light: #FFF9F0;
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Nunito', sans-serif; background: var(--light); color: var(--dark); line-height: 1.6; overflow-x: hidden; }
+        .bg-pattern { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; opacity: 0.4;
+            background-image: radial-gradient(circle at 20% 80%, var(--pink) 0%, transparent 8%),
+                radial-gradient(circle at 80% 20%, var(--blue) 0%, transparent 8%),
+                radial-gradient(circle at 40% 40%, var(--yellow) 0%, transparent 5%),
+                radial-gradient(circle at 90% 90%, var(--green) 0%, transparent 6%),
+                radial-gradient(circle at 10% 30%, var(--purple) 0%, transparent 4%);
+        }
+        nav { position: fixed; top: 0; width: 100%; background: white; z-index: 1000; padding: 15px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1); border-bottom: 4px solid var(--pink); }
+        nav .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Bangers', cursive; font-size: 2.2rem; color: var(--pink); text-decoration: none;
+            text-shadow: 3px 3px 0 var(--purple); letter-spacing: 2px; transition: transform 0.3s; }
+        .logo:hover { transform: rotate(-3deg) scale(1.05); }
+        .nav-right { display: flex; align-items: center; gap: 30px; }
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        nav a { color: var(--dark); text-decoration: none; font-weight: 700; font-size: 1rem; transition: all 0.3s; padding: 8px 15px; border-radius: 25px; }
+        nav a:hover { background: var(--yellow); transform: translateY(-3px); }
+        .lang-selector { position: relative; }
+        .lang-btn { display: flex; align-items: center; gap: 8px; padding: 8px 15px;
+            background: linear-gradient(135deg, var(--purple), var(--pink)); color: white; border: none; border-radius: 25px;
+            font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.3s;
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.2); }
+        .lang-btn:hover { transform: translateY(-2px); box-shadow: 5px 5px 0 rgba(0,0,0,0.2); }
+        .lang-btn .flag { font-size: 1.2rem; }
+        .lang-dropdown { position: absolute; top: 100%; right: 0; margin-top: 10px; background: white; border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2); overflow: hidden; opacity: 0; visibility: hidden;
+            transform: translateY(-10px); transition: all 0.3s; min-width: 180px; z-index: 1001; }
+        .lang-selector:hover .lang-dropdown, .lang-dropdown.show { opacity: 1; visibility: visible; transform: translateY(0); }
+        .lang-option { display: flex; align-items: center; gap: 10px; padding: 12px 20px; cursor: pointer; transition: all 0.2s; font-weight: 600; }
+        .lang-option:hover { background: linear-gradient(135deg, #FFE5EC, #E5F0FF); }
+        .lang-option.active { background: linear-gradient(135deg, var(--pink), var(--purple)); color: white; }
+        .lang-option .flag { font-size: 1.3rem; }
+        .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center;
+            padding: 120px 20px 80px; background: linear-gradient(135deg, #FFE5EC 0%, #E5F0FF 50%, #E5FFE9 100%); position: relative; }
+        .hero::before { content: '🎩 🍌 🎉 😂 🔥 💜 🎄 🎃 🎭'; position: absolute; top: 100px; left: 0; width: 200%;
+            font-size: 2rem; opacity: 0.3; animation: scroll-emoji 25s linear infinite; white-space: nowrap; }
+        @keyframes scroll-emoji { 0% { transform: translateX(0%); } 100% { transform: translateX(-50%); } }
+        .hero-content { position: relative; z-index: 1; max-width: 900px; }
+        .hero h1 { font-family: 'Bangers', cursive; font-size: 6rem; color: var(--purple); margin-bottom: 10px;
+            text-shadow: 5px 5px 0 var(--pink), 10px 10px 0 var(--yellow); letter-spacing: 5px; animation: wobble 3s ease-in-out infinite; }
+        @keyframes wobble { 0%, 100% { transform: rotate(-2deg); } 50% { transform: rotate(2deg); } }
+        .hero .tagline { font-size: 1.8rem; font-weight: 800; margin-bottom: 10px; color: var(--dark); }
+        .hero .subtitle { font-size: 1.3rem; opacity: 0.8; margin-bottom: 30px; font-style: italic;
+            background: linear-gradient(90deg, var(--pink), var(--purple)); -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero-image { max-width: 320px; margin: 30px auto; border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(196, 77, 255, 0.3), 0 0 0 8px white, 0 0 0 12px var(--pink);
+            transform: rotate(3deg); transition: transform 0.3s; }
+        .hero-image:hover { transform: rotate(-3deg) scale(1.02); }
+        .hero-image img { width: 100%; border-radius: 22px; }
+        .hero-badge { display: inline-block; background: var(--yellow); color: var(--dark); padding: 10px 25px;
+            border-radius: 50px; font-weight: 800; font-size: 1.1rem; margin-bottom: 30px;
+            box-shadow: 4px 4px 0 var(--orange); transform: rotate(-3deg); }
+        .cta-button { display: inline-block; padding: 20px 50px; background: linear-gradient(135deg, var(--pink), var(--purple));
+            color: white; text-decoration: none; font-weight: 800; font-size: 1.2rem; text-transform: uppercase;
+            letter-spacing: 2px; border-radius: 50px; transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(196, 77, 255, 0.4), 5px 5px 0 var(--yellow); border: none; cursor: pointer; }
+        .cta-button:hover { transform: translateY(-5px) rotate(2deg); box-shadow: 0 15px 40px rgba(196, 77, 255, 0.5), 8px 8px 0 var(--yellow); }
+        section { padding: 80px 20px; max-width: 1400px; margin: 0 auto; }
+        .section-title { font-family: 'Bangers', cursive; font-size: 3.5rem; text-align: center; margin-bottom: 15px; letter-spacing: 3px; }
+        .section-title.pink { color: var(--pink); text-shadow: 4px 4px 0 var(--purple); }
+        .section-title.purple { color: var(--purple); text-shadow: 4px 4px 0 var(--pink); }
+        .section-subtitle { text-align: center; font-weight: 600; font-size: 1.2rem; opacity: 0.7; margin-bottom: 50px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .catalog-section { background: linear-gradient(180deg, var(--light) 0%, #FFE5EC 100%); max-width: 100%; padding: 80px 20px; }
+        .catalog-inner { max-width: 1400px; margin: 0 auto; }
+        .catalog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .product-card { background: white; border-radius: 30px; overflow: hidden; transition: all 0.3s; position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 4px solid transparent; }
+        .product-card:hover { transform: translateY(-10px) rotate(1deg); box-shadow: 0 20px 40px rgba(196, 77, 255, 0.2); border-color: var(--pink); }
+        .product-card .image-container { width: 100%; aspect-ratio: 1; overflow: hidden; position: relative; background: linear-gradient(135deg, #f5f5f5, #e8e8e8); }
+        .product-card .image-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .product-card:hover .image-container img { transform: scale(1.1); }
+        .product-card .card-content { padding: 25px; text-align: center; }
+        .product-card h3 { font-family: 'Bangers', cursive; font-size: 1.8rem; color: var(--purple); margin-bottom: 5px; letter-spacing: 1px; }
+        .product-card .origin { font-size: 0.9rem; font-weight: 700; color: var(--pink); margin-bottom: 10px; }
+        .product-card .description { font-size: 0.95rem; opacity: 0.8; line-height: 1.5; }
+        .badge { position: absolute; top: 15px; right: 15px; padding: 8px 15px; border-radius: 25px; font-size: 0.75rem;
+            font-weight: 800; text-transform: uppercase; z-index: 5; box-shadow: 3px 3px 0 rgba(0,0,0,0.2); }
+        .badge.bestseller { background: var(--yellow); color: var(--dark); transform: rotate(5deg); }
+        .badge.available { background: var(--green); color: white; transform: rotate(-3deg); }
+        .badge.new { background: var(--purple); color: white; transform: rotate(3deg); }
+        .badge.xmas { background: var(--red); color: white; transform: rotate(-5deg); }
+        .badge.halloween { background: var(--orange); color: var(--dark); transform: rotate(5deg); }
+        .badge.carnival { background: linear-gradient(135deg, var(--pink), var(--purple), var(--blue)); color: white; transform: rotate(-3deg); }
+        .category-title { font-family: 'Bangers', cursive; font-size: 2rem; margin: 50px 0 30px; display: flex;
+            align-items: center; gap: 15px; color: var(--dark); letter-spacing: 2px; }
+        .category-title:first-of-type { margin-top: 0; }
+        .category-title::after { content: ''; flex: 1; height: 4px; background: linear-gradient(90deg, var(--pink), var(--purple), transparent); border-radius: 2px; }
+        .category-title.xmas::after { background: linear-gradient(90deg, var(--red), var(--green), transparent); }
+        .category-title.halloween::after { background: linear-gradient(90deg, var(--orange), var(--purple), transparent); }
+        .category-title.carnival::after { background: linear-gradient(90deg, var(--pink), var(--yellow), var(--blue), transparent); }
+        .variants-section { background: linear-gradient(180deg, #E5F0FF 0%, #FFE5EC 100%); padding: 80px 20px; max-width: 100%; }
+        .variants-inner { max-width: 1200px; margin: 0 auto; }
+        .variants-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        .variant-card { background: white; border-radius: 30px; padding: 40px 30px; text-align: center; transition: all 0.3s;
+            border: 4px solid transparent; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+        .variant-card:nth-child(1) { border-top: 8px solid var(--pink); }
+        .variant-card:nth-child(2) { border-top: 8px solid var(--orange); }
+        .variant-card:nth-child(3) { border-top: 8px solid var(--blue); }
+        .variant-card:hover { transform: translateY(-10px) rotate(-1deg); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+        .variant-card .icon { font-size: 4rem; margin-bottom: 20px; }
+        .variant-card h3 { font-family: 'Bangers', cursive; font-size: 1.8rem; color: var(--purple); margin-bottom: 15px; letter-spacing: 1px; }
+        .variant-card p { opacity: 0.8; margin-bottom: 20px; }
+        .variant-card ul { text-align: left; list-style: none; }
+        .variant-card li { padding: 10px 0; border-bottom: 2px dashed #eee; font-size: 0.95rem; display: flex; align-items: center; gap: 10px; }
+        .variant-card li::before { content: '✨'; font-size: 1.2rem; }
+        .about-section { background: white; padding: 80px 20px; }
+        .about-content { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; max-width: 1200px; margin: 0 auto; }
+        .about-text h2 { font-family: 'Bangers', cursive; font-size: 3rem; color: var(--purple); margin-bottom: 25px;
+            text-shadow: 3px 3px 0 var(--pink); letter-spacing: 2px; }
+        .about-text p { margin-bottom: 20px; font-size: 1.1rem; line-height: 1.8; }
+        .about-text .quote { background: linear-gradient(90deg, var(--pink), var(--purple)); -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent; background-clip: text; font-size: 1.4rem; font-weight: 800; font-style: italic; margin-top: 30px; }
+        .about-image { position: relative; }
+        .about-image img { width: 100%; border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(196, 77, 255, 0.2), 0 0 0 8px white, 0 0 0 12px var(--purple); transform: rotate(-3deg); }
+        .about-image::before { content: '😂🔥'; position: absolute; top: -20px; right: -20px; font-size: 3rem; animation: bounce 1.5s ease-in-out infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        .stats-banner { background: linear-gradient(135deg, var(--purple), var(--pink)); padding: 40px 20px; text-align: center; color: white; }
+        .stats-grid { display: flex; justify-content: center; gap: 60px; flex-wrap: wrap; max-width: 1000px; margin: 0 auto; }
+        .stat-item { text-align: center; }
+        .stat-item .number { font-family: 'Bangers', cursive; font-size: 3.5rem; text-shadow: 3px 3px 0 rgba(0,0,0,0.2); }
+        .stat-item .label { font-weight: 600; opacity: 0.9; }
+        footer { background: linear-gradient(135deg, var(--purple), var(--pink)); padding: 60px 20px 30px; text-align: center; color: white; }
+        footer .logo { font-size: 3rem; display: block; margin-bottom: 15px; color: white; text-shadow: 4px 4px 0 rgba(0,0,0,0.2); }
+        footer .tagline { font-size: 1.2rem; opacity: 0.9; margin-bottom: 30px; font-weight: 600; }
+        footer .disclaimer { font-size: 0.8rem; opacity: 0.7; max-width: 600px; margin: 30px auto 0; }
+        footer .social-emojis { font-size: 2rem; margin: 20px 0; letter-spacing: 10px; }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 3.5rem; }
+            .hero .tagline { font-size: 1.3rem; }
+            nav ul { display: none; }
+            .about-content { grid-template-columns: 1fr; gap: 40px; }
+            .section-title { font-size: 2.5rem; }
+            .catalog-grid { grid-template-columns: 1fr; }
+            .stats-grid { gap: 30px; }
+            .stat-item .number { font-size: 2.5rem; }
+            .nav-right { gap: 10px; }
+            .lang-btn span:not(.flag) { display: none; }
+        }
+        .product-card:hover { cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text y="28" font-size="28">🎩</text></svg>'), auto; }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <nav>
+        <div class="container">
+            <a href="#" class="logo">CAPPENE™</a>
+            <div class="nav-right">
+                <ul>
+                    <li><a href="#catalogo" id="nav_catalog">🎩 Catalogo</a></li>
+                    <li><a href="#varianti" id="nav_variants">✨ Varianti</a></li>
+                    <li><a href="#about" id="nav_about">💜 Chi Siamo</a></li>
+                </ul>
+                <div class="lang-selector">
+                    <button class="lang-btn" id="currentLang">
+                        <span class="flag">🇮🇹</span>
+                        <span>Italiano</span>
+                        <span>▼</span>
+                    </button>
+                    <div class="lang-dropdown" id="langDropdown">
+                        <div class="lang-option active" data-lang="it"><span class="flag">🇮🇹</span><span>Italiano</span></div>
+                        <div class="lang-option" data-lang="en"><span class="flag">🇬🇧</span><span>English</span></div>
+                        <div class="lang-option" data-lang="es"><span class="flag">🇪🇸</span><span>Español</span></div>
+                        <div class="lang-option" data-lang="fr"><span class="flag">🇫🇷</span><span>Français</span></div>
+                        <div class="lang-option" data-lang="de"><span class="flag">🇩🇪</span><span>Deutsch</span></div>
+                        <div class="lang-option" data-lang="pl"><span class="flag">🇵🇱</span><span>Polski</span></div>
+                        <div class="lang-option" data-lang="ja"><span class="flag">🇯🇵</span><span>日本語</span></div>
+                        <div class="lang-option" data-lang="zh"><span class="flag">🇨🇳</span><span>中文</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <section class="hero">
+        <div class="hero-content">
+            <h1>CAPPENE™</h1>
+            <p class="tagline" id="hero_tagline">Il Cappello Che Non Ti Aspetti! 🎉</p>
+            <p class="subtitle" id="hero_subtitle">"Dove non batte il sole, splende lo stile"</p>
+            <div class="hero-image"><img src="Sir_Dickens.png" alt="Sir Dickens"></div>
+            <div class="hero-badge">⭐ Sir Dickens - <span id="hero_icon">L'Icona</span> ⭐</div>
+            <br><br>
+            <a href="#catalogo" class="cta-button" id="hero_cta">Scopri la Collezione! 🔥</a>
+        </div>
+    </section>
+    <div class="stats-banner">
+        <div class="stats-grid">
+            <div class="stat-item"><div class="number">22+</div><div class="label" id="stats_models">Modelli Unici</div></div>
+            <div class="stat-item"><div class="number">5</div><div class="label" id="stats_collections">Collezioni</div></div>
+            <div class="stat-item"><div class="number">∞</div><div class="label" id="stats_laughs">Risate Garantite</div></div>
+        </div>
+    </div>
+    <section id="catalogo" class="catalog-section">
+        <div class="catalog-inner">
+            <h2 class="section-title pink" id="catalog_title">Il Catalogo 🎩</h2>
+            <p class="section-subtitle" id="catalog_subtitle">Ogni modello è progettato per essere indossabile, lavabile e soprattutto... ESILARANTE! 😂</p>
+            <h3 class="category-title" id="cat_nationality">🌍 Collezione Nazionalità</h3>
+            <div class="catalog-grid">
+                <div class="product-card">
+                    <span class="badge bestseller" id="badge_bestseller">🔥 Bestseller</span>
+                    <div class="image-container"><img src="Sir_Dickens.png" alt="Sir Dickens"></div>
+                    <div class="card-content">
+                        <h3>Sir Dickens</h3>
+                        <div class="origin">🇬🇧 <span id="country_england">Inghilterra</span></div>
+                        <p class="description" id="desc_dickens">Cilindro vittoriano con monocolo e mantello. Per veri gentleman! 🎩</p>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <span class="badge available" id="badge_available">✅ Disponibile</span>
+                    <div class="image-container"><img src="sombrerito_new.png" alt="El Sombrerito"></div>
+                    <div class="card-content">
+                        <h3>El Sombrerito</h3>
+                        <div class="origin">🇲🇽 <span id="country_mexico">Messico</span></div>
+                        <p class="description" id="desc_sombrerito">Sombrero con pompon colorati. ¡Arriba arriba! 🌮</p>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <span class="badge available">✅ Disponibile</span>
+                    <div class="image-container"><img src="faraone_new.png" alt="Il Faraone"></div>
+                    <div class="card-content">
+                        <h3 id="name_pharaoh">Il Faraone</h3>
+                        <div class="origin">🇪🇬 <span id="country_egypt">Egitto</span></div>
+                        <p class="description" id="desc_pharaoh">Piramide dorata in miniatura. Walk like an Egyptian! 🐪</p>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <span class="badge available">✅ Disponibile</span>
+                    <div class="image-container"><img src="mandarino_new.png" alt="Il Mandarino"></div>
+                    <div class="card-content">
+                        <h3 id="name_mandarin">Il Mandarino</h3>
+                        <div class="origin">🇨🇳 <span id="country_china">Cina</span></div>
+                        <p class="description" id="desc_mandarin">Cappello conico con nappina. Namaste! 🥢</p>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <span class="badge new" id="badge_new">🆕 New!</span>
+                    <div class="image-container"><img src="sheriff.png" alt="The Sheriff"></div>
+                    <div class="card-content">
+                        <h3>The Sheriff</h3>
+                        <div class="origin">🇺🇸 <span id="country_usa">USA / Texas</span></div>
+                        <p class="description" id="desc_sheriff">Cappello da cowboy con stella. Yee-haw! 🐴</p>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <span class="badge new">🆕 New!</span>
+                    <div class="image-container"><img src="capn_jack.png" alt="Cap'n Jack"></div>
+                    <div class="card-content">
+                        <h3>Cap'n Jack</h3>
+                        <div class="origin">🏴‍☠️ <span id="country_caribbean">Caraibi</span></div>
+                        <p class="description" id="desc_jack">Tricorno da pirata. Arr, matey! ☠️</p>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <span class="badge new">🆕 New!</span>
+                    <div class="image-container"><img src="tiroler.png" alt="Der Tiroler"></div>
+                    <div class="card-content">
+                        <h3>Der Tiroler</h3>
+                        <div class="origin">🇦🇹 <span id="country_austria">Austria</span></div>
+                        <p class="description" id="desc_tiroler">Cappello tirolese con piuma. Jodeling time! 🏔️</p>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <span class="badge new">🆕 New!</span>
+                    <div class="image-container"><img src="ushanka.png" alt="Ushanka"></div>
+                    <div class="card-content">
+                        <h3>Ushanka</h3>
+                        <div class="origin">🇷🇺 <span id="country_russia">Russia</span></div>
+                        <p class="description" id="desc_ushanka">Colbacco con stella rossa. На здоровье! 🥶</p>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <span class="badge new">🆕 New!</span>
+                    <div class="image-container"><img src="beret.png" alt="Le Béret"></div>
+                    <div class="card-content">
+                        <h3>Le Béret</h3>
+                        <div class="origin">🇫🇷 <span id="country_france">Francia</span></div>
+                        <p class="description" id="desc_beret">Basco nero classico. Ooh la la! 🗼</p>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <span class="badge new">🆕 New!</span>
+                    <div class="image-container"><img src="lucky_paddy.png" alt="Lucky Paddy"></div>
+                    <div class="card-content">
+                        <h3>Lucky Paddy</h3>
+                        <div class="origin">🇮🇪 <span id="country_ireland">Irlanda</span></div>
+                        <p class="description" id="desc_paddy">Cappello da leprechaun. Top o' the morning! 🌈</p>
+                    </div>
+                </div>
+            </div>
+            <h3 class="category-title" id="cat_professions">👨‍🍳 Collezione Mestieri</h3>
+            <div class="catalog-grid">
+                <div class="product-card">
+                    <span class="badge new">🆕 New!</span>
+                    <div class="image-container"><img src="chef.png" alt="Lo Chef"></div>
+                    <div class="card-content">
+                        <h3 id="name_chef">Lo Chef</h3>
+                        <div class="origin">🇮🇹 <span id="country_italy">Italia</span></div>
+                        <p class="description" id="desc_chef">Toque da chef. Mamma mia! 🍝</p>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <span class="badge new">🆕 New!</span>
+                    <div class="image-container"><img src="laureato.png" alt="Il Laureato"></div>
+                    <div class="card-content">
+                        <h3 id="name_graduate">Il Laureato</h3>
+                        <div class="origin">🎓 <span id="country_university">Università</span></div>
+                        <p class="description" id="desc_graduate">Tocco da laurea. Dottore! 📚</p>
+                    </div>
+                </div>
+            </div>
+            <h3 class="category-title xmas" id="cat_christmas">🎄 Collezione Natale</h3>
+            <div class="catalog-grid">
+                <div class="product-card">
+                    <span class="badge xmas" id="badge_xmas">🎄 Xmas!</span>
+                    <div class="image-container"><img src="babbo_natale_new.png" alt="Babbo Natale"></div>
+                    <div class="card-content">
+                        <h3 id="name_santa">Babbo Natale</h3>
+                        <div class="origin">🎅 <span id="country_northpole">Polo Nord</span></div>
+                        <p class="description" id="desc_santa">Cappello rosso con pelliccia. Ho ho ho! 🎁</p>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <span class="badge xmas">🎄 Xmas!</span>
+                    <div class="image-container"><img src="renna.png" alt="Renna"></div>
+                    <div class="card-content">
+                        <h3 id="name_reindeer">Renna</h3>
+                        <div class="origin">🦌 <span id="country_lapland">Lapponia</span></div>
+                        <p class="description" id="desc_reindeer">Corna e naso rosso. Rudolph approved! 🔴</p>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <span class="badge xmas">🎄 Xmas!</span>
+                    <div class="image-container"><img src="folletto.png" alt="Folletto"></div>
+                    <div class="card-content">
+                        <h3 id="name_elf">Folletto</h3>
+                        <div class="origin">🧝 <span id="country_workshop">Laboratorio</span></div>
+                        <p class="description" id="desc_elf">Cappello da elfo con campanellino. Jingle balls! 🔔</p>
+                    </div>
+                </div>
+            </div>
+            <h3 class="category-title halloween" id="cat_halloween">🎃 Collezione Halloween</h3>
+            <div class="catalog-grid">
+                <div class="product-card">
+                    <span class="badge halloween" id="badge_spooky">🎃 Spooky!</span>
+                    <div class="image-container"><img src="vampiro.png" alt="Vampiro"></div>
+                    <div class="card-content">
+                        <h3 id="name_vampire">Il Vampiro</h3>
+                        <div class="origin">🧛 <span id="country_transylvania">Transilvania</span></div>
+                        <p class="description" id="desc_vampire">Mantello e denti aguzzi. I vant to suck... 🩸</p>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <span class="badge halloween">🎃 Spooky!</span>
+                    <div class="image-container"><img src="zombie.png" alt="Zombie"></div>
+                    <div class="card-content">
+                        <h3>Frankenstein</h3>
+                        <div class="origin">🧟 <span id="country_lab">Laboratorio</span></div>
+                        <p class="description" id="desc_frankenstein">Testa piatta con bulloni. It's alive! ⚡</p>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <span class="badge halloween">🎃 Spooky!</span>
+                    <div class="image-container"><img src="mostro.png" alt="Mostro"></div>
+                    <div class="card-content">
+                        <h3 id="name_monster">Il Mostro</h3>
+                        <div class="origin">👁️ <span id="country_dimension">Altra Dimensione</span></div>
+                        <p class="description" id="desc_monster">Un occhio solo ma vede tutto. Cyclops vibes! 👾</p>
+                    </div>
+                </div>
+            </div>
+            <h3 class="category-title carnival" id="cat_carnival">🎭 Collezione Carnevale</h3>
+            <div class="catalog-grid">
+                <div class="product-card">
+                    <span class="badge carnival" id="badge_carnival">🎭 Carnival!</span>
+                    <div class="image-container"><img src="arlecchino.png" alt="Arlecchino"></div>
+                    <div class="card-content">
+                        <h3 id="name_harlequin">Arlecchino</h3>
+                        <div class="origin">🎪 <span id="country_commedia">Commedia dell'Arte</span></div>
+                        <p class="description" id="desc_harlequin">Cappello a sonagli colorato. Party time! 🎊</p>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <span class="badge carnival">🎭 Carnival!</span>
+                    <div class="image-container"><img src="maschera_veneziana.png" alt="Maschera Veneziana"></div>
+                    <div class="card-content">
+                        <h3 id="name_venetian">Maschera Veneziana</h3>
+                        <div class="origin">🇮🇹 <span id="country_venice">Venezia</span></div>
+                        <p class="description" id="desc_venetian">Eleganza e mistero. Eyes wide shut! 🎭</p>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <span class="badge carnival">🎭 Carnival!</span>
+                    <div class="image-container"><img src="re_carnevale.png" alt="Re del Carnevale"></div>
+                    <div class="card-content">
+                        <h3 id="name_carnivalking">Re del Carnevale</h3>
+                        <div class="origin">🌈 <span id="country_rio">Rio de Janeiro</span></div>
+                        <p class="description" id="desc_carnivalking">Parrucca arcobaleno. Samba time! 💃</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="varianti" class="variants-section">
+        <div class="variants-inner">
+            <h2 class="section-title purple" id="variants_title">Le Varianti ✨</h2>
+            <p class="section-subtitle" id="variants_subtitle">Perché un cappello non è mai SOLO un cappello... 😏</p>
+            <div class="variants-grid">
+                <div class="variant-card">
+                    <div class="icon">🎨</div>
+                    <h3 id="variant_classic">Classic Edition</h3>
+                    <p id="variant_classic_desc">Il cappello decorativo originale. Metti, ridi, ripeti!</p>
+                    <ul>
+                        <li id="variant_classic_1">Silicone ipoallergenico</li>
+                        <li id="variant_classic_2">Taglia unica elastica</li>
+                        <li id="variant_classic_3">Lavabile e riutilizzabile</li>
+                        <li id="variant_classic_4">Confezione regalo inclusa</li>
+                    </ul>
+                </div>
+                <div class="variant-card">
+                    <div class="icon">🍬</div>
+                    <h3 id="variant_edible">Edible Edition</h3>
+                    <p id="variant_edible_desc">Piacere per gli occhi E per il palato! 😋</p>
+                    <ul>
+                        <li id="variant_edible_1">Cioccolato o caramella</li>
+                        <li id="variant_edible_2">Gusti: menta, fragola, ecc.</li>
+                        <li id="variant_edible_3">100% commestibile</li>
+                        <li id="variant_edible_4">Certificazione alimentare</li>
+                    </ul>
+                </div>
+                <div class="variant-card">
+                    <div class="icon">🛡️</div>
+                    <h3 id="variant_safe">Safe Edition</h3>
+                    <p id="variant_safe_desc">Divertimento + Protezione = WIN! 🏆</p>
+                    <ul>
+                        <li id="variant_safe_1">Profilattico integrato</li>
+                        <li id="variant_safe_2">Applicazione facilitata</li>
+                        <li id="variant_safe_3">Riduce abrasioni</li>
+                        <li id="variant_safe_4">Certificazione CE (coming)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="about" class="about-section">
+        <div class="about-content">
+            <div class="about-text">
+                <h2 id="about_title">La Storia 💜</h2>
+                <p id="about_p1">Tutto è nato da una domanda: <strong>perché il divertimento in camera da letto deve essere sempre serio?</strong> 🤔</p>
+                <p id="about_p2">CAPPENE™ nasce per portare un MEGA sorriso dove meno te lo aspetti! Un prodotto per coppie che non hanno paura di ridere insieme e vogliono rompere la routine con un tocco di pura follia. 🎉</p>
+                <p id="about_p3">Ogni cappello è progettato con amore (e tante risate): materiali top, vestibilità universale e design che garantisce il massimo effetto comico!</p>
+                <p class="quote" id="about_quote">"La vita è troppo breve per prendersi sempre sul serio!" 🚀</p>
+            </div>
+            <div class="about-image"><img src="Sir_Dickens.png" alt="Sir Dickens"></div>
+        </div>
+    </section>
+    <footer>
+        <a href="#" class="logo">CAPPENE™</a>
+        <p class="tagline" id="footer_tagline">"Il cappello che non ti aspetti, dove non te lo aspetti!" 🎩🍆</p>
+        <div class="social-emojis">🎉 😂 🔥 💜 🎩 🎄 🎃 🎭</div>
+        <p style="opacity: 0.8;" id="footer_rights">© 2026 CAPPENE™ - All rights reserved (ma le risate sono gratis!)</p>
+        <p class="disclaimer" id="footer_disclaimer">Solo per adulti (18+). Le immagini sono illustrative. Materiali certificati e sicuri. Side effects: risate incontrollabili! 😂</p>
+    </footer>
